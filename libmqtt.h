@@ -56,6 +56,9 @@ extern "C" {
 /* default mqtt keep alive. */
 #define LIBMQTT_DEF_KEEPALIVE       30
 
+/* mqtt packet retry time. */
+#define LIBMQTT_TIME_RETRY          20
+
 /* libmqtt data structure. */
 struct libmqtt;
 

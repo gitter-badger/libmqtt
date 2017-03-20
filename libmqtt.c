@@ -155,14 +155,14 @@ __log(struct libmqtt *mqtt, const char *fmt, ...) {
 }
 
 static void
-__check_pub(struct libmqtt *mqtt) {
+__check_retry(struct libmqtt *mqtt) {
     struct libmqtt_pub **pp;
 
     pp = &mqtt->pub.head;
     while (*pp) {
         struct libmqtt_pub *pub;
         pub = *pp;
-        if (mqtt->t.now - pub->t > mqtt->c.keep_alive) {
+        if (mqtt->t.now - pub->t > LIBMQTT_TIME_RETRY) {
             switch (pub->s) {
             case LIBMQTT_ST_SEND_PUBLUSH:
             case LIBMQTT_ST_WAIT_PUBACK:
@@ -305,7 +305,7 @@ __update(aeEventLoop *el, long long id, void *privdata) {
             __log(mqtt, "sending PINGREQ");
         }
     }
-    __check_pub(mqtt);
+    __check_retry(mqtt);
     return 1000;
 }
 
